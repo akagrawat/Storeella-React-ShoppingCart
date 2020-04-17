@@ -21,3 +21,11 @@ export const selectIsCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching
 );
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+);
+
+
+// !! is used to convert a value in boolean, ex. !!null return false and !!{} return true

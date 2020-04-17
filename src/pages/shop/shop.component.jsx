@@ -4,16 +4,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import './shop.style.scss'
-import CollectionOverview from '../../components/collection-overview/collection-overview.component';
-import CollectionPage from '../collection/collection.component';
+import CollectionPageContainer from '../collection/collection.container';
 import { fetchCollectionsStartAsync } from '../../redux/shop/shop.action';
-import WithSpinner from '../../components/with-spinner/with-spinner.component';
-import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import CollectionsOverviewContainer from '../../components/collection-overview/collection-overview.container';
 
-const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
-const ShopPage = ({ match, isCollectionFetching, fetchCollectionsStartAsync }) => {
+const ShopPage = ({ match, fetchCollectionsStartAsync, isCollectionsLoaded }) => {
     const [count] = useState(0);
     useEffect(() => {
         fetchCollectionsStartAsync();
@@ -22,20 +18,17 @@ const ShopPage = ({ match, isCollectionFetching, fetchCollectionsStartAsync }) =
     return (
         <div className="shop-page">
             <Route exact path={`${match.path}`}
-                render={(props) => <CollectionOverviewWithSpinner isLoading={isCollectionFetching} {...props} />} />
+                component={CollectionsOverviewContainer} />
 
             <Route path={`${match.path}/:collectionId`}
-                render={(props) => <CollectionPageWithSpinner isLoading={isCollectionFetching} {...props} />} />
+                component={CollectionPageContainer} />
         </div>
     )
 }
 
-const mapStateToProps = createStructuredSelector({
-    isCollectionFetching: selectIsCollectionFetching
-});
 
 const mapDispatchToProps = (dispatch) => ({
     fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);
