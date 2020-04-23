@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import './shop.style.scss'
 import CollectionPageContainer from '../collection/collection.container';
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.action';
+import { fetchCollectionsStart } from '../../redux/shop/shop.action';
+
 import CollectionsOverviewContainer from '../../components/collection-overview/collection-overview.container';
 
 
-const ShopPage = ({ match, fetchCollectionsStartAsync, isCollectionsLoaded }) => {
-    const [count] = useState(0);
+const ShopPage = ({ match, fetchCollectionsStart }) => {
     useEffect(() => {
-        fetchCollectionsStartAsync();
-    }, [count]);
+        fetchCollectionsStart();
+    }, []);
 
     return (
         <div className="shop-page">
@@ -24,11 +23,12 @@ const ShopPage = ({ match, fetchCollectionsStartAsync, isCollectionsLoaded }) =>
                 component={CollectionPageContainer} />
         </div>
     )
+
 }
 
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);
