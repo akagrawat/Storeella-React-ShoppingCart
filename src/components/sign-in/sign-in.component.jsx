@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+
 import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
+
 import './sign-in.style.scss';
-import { signInWithGoogle } from '../../firebase/firebase.utils';
-import { validate } from '../../components/validations/form-validation-rules';
+
 import firebase from '../../firebase/firebase.utils';
+
+import { validate } from '../../components/validations/form-validation-rules';
+
+import { googleSignInStart } from '../../redux/user/user.actions';
 
 const formFields = {
     email: "",
@@ -16,7 +22,7 @@ const formErrors = {
     password: ""
 }
 
-const SignIn = () => {
+const SignIn = (props) => {
     const [formField, setFormField] = useState(formFields);
     const [formError, setFormErrors] = useState(formErrors);
     const [userNotExist, setUserNotExist] = useState(null);
@@ -51,6 +57,8 @@ const SignIn = () => {
         setFormErrors(() => ({ ...errors }));
     }
 
+    const { googleSignInStart } = props;
+
     return (
         <div className="sign-in">
             <h2>I already have an acoount</h2>
@@ -65,11 +73,15 @@ const SignIn = () => {
 
                 <div className="buttons">
                     <CustomButton type="submit" > Sign In </CustomButton>
-                    <CustomButton onClick={signInWithGoogle} isGoogleSignIn> Sign In with google </CustomButton>
+                    <CustomButton type='button' onClick={googleSignInStart} isGoogleSignIn> Sign In with google </CustomButton>
                 </div>
             </form>
         </div>
     )
 }
 
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart())
+});
+
+export default connect(null, mapDispatchToProps)(SignIn);
