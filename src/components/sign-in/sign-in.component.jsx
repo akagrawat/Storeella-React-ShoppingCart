@@ -39,13 +39,15 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
         });
 
         if (valid) {
-            try {
-                // await firebase.auth().signInWithEmailAndPassword(formField.email, formField.password);
-                await emailSignInStart(formField.email, formField.password);
-            } catch (error) {
-                setUserNotExist(error);
-                console.log(error);
-            }
+            // try {
+            //     // await firebase.auth().signInWithEmailAndPassword(formField.email, formField.password);
+            //     console.log(formField);
+            emailSignInStart(formField);
+
+            // } catch (error) {
+            //     setUserNotExist(error);
+            //     console.log(error);
+            // }
         }
 
     }
@@ -82,7 +84,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
 
 const mapDispatchToProps = dispatch => ({
     googleSignInStart: () => dispatch(googleSignInStart()),
-    emailSignInStart: (email, password) => dispatch(emailSignInStart({ email, password }))
+    emailSignInStart: (emailAndPassword) => dispatch(emailSignInStart(emailAndPassword))
 });
 
 export default connect(null, mapDispatchToProps)(SignIn);
