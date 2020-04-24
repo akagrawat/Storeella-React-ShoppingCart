@@ -19,24 +19,24 @@ const App = ({ currentUser, setCurrentUser }) => {
   let unSubscribedFromAuth = null;
   let userId = null;
 
-  useEffect(() => {
-    unSubscribedFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapShot => {
-          userId = snapShot.id;
-          setCurrentUser({
-            currentUser: { id: snapShot.id, ...snapShot.data() }
-          }, () => { console.log(currentUser) });
-        });
-      }
-      setCurrentUser(userAuth);
-    });
-    return () => {
-      unSubscribedFromAuth();
-    }
-  }, [userId]
-  )
+  // useEffect(() => {
+  //   // unSubscribedFromAuth = auth.onAuthStateChanged(async userAuth => {
+  //   //   // if (userAuth) {
+  //   //   //   const userRef = await createUserProfileDocument(userAuth);
+  //   //   //   userRef.onSnapshot(snapShot => {
+  //   //   //     userId = snapShot.id;
+  //   //   //     setCurrentUser({
+  //   //   //       currentUser: { id: snapShot.id, ...snapShot.data() }
+  //   //   //     }, () => { console.log(currentUser) });
+  //   //   //   });
+  //   //   // }
+  //   //   // setCurrentUser(userAuth);
+  //   // });
+  //   return () => {
+  //     unSubscribedFromAuth();
+  //   }
+  // }, [userId]
+  // )
 
   return (
     <div className="App">

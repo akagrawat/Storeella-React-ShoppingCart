@@ -10,7 +10,7 @@ import firebase from '../../firebase/firebase.utils';
 
 import { validate } from '../../components/validations/form-validation-rules';
 
-import { googleSignInStart } from '../../redux/user/user.actions';
+import { googleSignInStart, emailSignInStart } from '../../redux/user/user.actions';
 
 const formFields = {
     email: "",
@@ -22,7 +22,7 @@ const formErrors = {
     password: ""
 }
 
-const SignIn = (props) => {
+const SignIn = ({ googleSignInStart, emailSignInStart }) => {
     const [formField, setFormField] = useState(formFields);
     const [formError, setFormErrors] = useState(formErrors);
     const [userNotExist, setUserNotExist] = useState(null);
@@ -40,7 +40,8 @@ const SignIn = (props) => {
 
         if (valid) {
             try {
-                await firebase.auth().signInWithEmailAndPassword(formField.email, formField.password);
+                // await firebase.auth().signInWithEmailAndPassword(formField.email, formField.password);
+                await emailSignInStart(formField.email, formField.password);
             } catch (error) {
                 setUserNotExist(error);
                 console.log(error);
@@ -57,7 +58,6 @@ const SignIn = (props) => {
         setFormErrors(() => ({ ...errors }));
     }
 
-    const { googleSignInStart } = props;
 
     return (
         <div className="sign-in">
@@ -81,7 +81,8 @@ const SignIn = (props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    googleSignInStart: () => dispatch(googleSignInStart())
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({ email, password }))
 });
 
 export default connect(null, mapDispatchToProps)(SignIn);
