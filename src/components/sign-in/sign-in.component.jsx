@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 
 import './sign-in.style.scss';
 
-import firebase from '../../firebase/firebase.utils';
-
 import { validate } from '../../components/validations/form-validation-rules';
 
 import { googleSignInStart, emailSignInStart } from '../../redux/user/user.actions';
+import { selectUserError } from '../../redux/user/user.selector';
 
 const formFields = {
     email: "",
@@ -22,10 +22,9 @@ const formErrors = {
     password: ""
 }
 
-const SignIn = ({ googleSignInStart, emailSignInStart }) => {
+const SignIn = ({ googleSignInStart, emailSignInStart, userError }) => {
     const [formField, setFormField] = useState(formFields);
     const [formError, setFormErrors] = useState(formErrors);
-    const [userNotExist, setUserNotExist] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,18 +38,10 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
         });
 
         if (valid) {
-            // try {
-            //     // await firebase.auth().signInWithEmailAndPassword(formField.email, formField.password);
-            //     console.log(formField);
             emailSignInStart(formField);
-
-            // } catch (error) {
-            //     setUserNotExist(error);
-            //     console.log(error);
-            // }
         }
 
-    }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,13 +49,13 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
 
         let errors = validate(e.target, formError);
         setFormErrors(() => ({ ...errors }));
-    }
+    };
 
 
     return (
         <div className="sign-in">
             <h2>I already have an acoount</h2>
-            {userNotExist ?
+            {userError ?
                 <span className="error">Please enter valid email and password</span> :
                 <span>Sign with your email and passsword</span>
             }
@@ -82,9 +73,13 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
     )
 }
 
+const mapStateToProps = createStructuredSelector({
+    userError: selectUserError
+});
+
 const mapDispatchToProps = dispatch => ({
     googleSignInStart: () => dispatch(googleSignInStart()),
     emailSignInStart: (emailAndPassword) => dispatch(emailSignInStart(emailAndPassword))
 });
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
