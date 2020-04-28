@@ -1,34 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
-import './shop.style.scss'
-import CollectionPageContainer from '../collection/collection.container';
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.action';
-import CollectionsOverviewContainer from '../../components/collection-overview/collection-overview.container';
+import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
+import CollectionPage from '../collection/collection.component';
 
+const ShopPage = ({ match }) => (
+  <div className='shop-page'>
+    <Route exact path={`${match.path}`} component={CollectionsOverview} />
+    <Route path={`${match.path}/:collectionId`} component={CollectionPage} />
+  </div>
+);
 
-const ShopPage = ({ match, fetchCollectionsStartAsync, isCollectionsLoaded }) => {
-    const [count] = useState(0);
-    useEffect(() => {
-        fetchCollectionsStartAsync();
-    }, [count]);
-
-    return (
-        <div className="shop-page">
-            <Route exact path={`${match.path}`}
-                component={CollectionsOverviewContainer} />
-
-            <Route path={`${match.path}/:collectionId`}
-                component={CollectionPageContainer} />
-        </div>
-    )
-}
-
-
-const mapDispatchToProps = (dispatch) => ({
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
-});
-
-export default connect(null, mapDispatchToProps)(ShopPage);
+export default ShopPage;

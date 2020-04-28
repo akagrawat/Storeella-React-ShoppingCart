@@ -3,29 +3,17 @@ import { createSelector } from 'reselect';
 const selectShop = state => state.shop;
 
 export const selectCollections = createSelector(
-    [selectShop],
-    shop => shop.collections
-)
-export const selectCollectionPreview = createSelector(
-    [selectCollections],
-    collections => collections ? Object.keys(collections).map(key => collections[key]) : []
-)
+  [selectShop],
+  shop => shop.collections
+);
+
+export const selectCollectionsForPreview = createSelector(
+  [selectCollections],
+  collections => Object.keys(collections).map(key => collections[key])
+);
 
 export const selectCollection = collectionUrlParam =>
-    createSelector(
-        [selectCollections],
-        collections => collections ? collections[collectionUrlParam] : null
-    );
-
-export const selectIsCollectionFetching = createSelector(
-    [selectShop],
-    shop => shop.isFetching
-);
-
-export const selectIsCollectionsLoaded = createSelector(
-    [selectShop],
-    shop => !!shop.collections
-);
-
-
-// !! is used to convert a value in boolean, ex. !!null return false and !!{} return true
+  createSelector(
+    [selectCollections],
+    collections => collections[collectionUrlParam]
+  );
