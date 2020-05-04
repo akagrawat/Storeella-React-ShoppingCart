@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-import { addItemToCart, getCartItemCount } from './cart.utils';
+import { addItemToCart, getCartItemCount, removeItemFromCart, getCartItemTotal, clearItemFromCart } from './cart.utils';
 
 export const typeDefs = gql`
 extend type Item {
@@ -9,7 +9,9 @@ extend type Item {
 
 extend type Mutation {
     ToggleCartHidden: Boolean!
-    AddItemToCart(item: Item!): [Item]!
+    AddItemToCart(item: Item!): [Item]!,
+    RemoveItemFromCart(item: Item!): [Item]!,
+    ClearItemFormCart(item: Item!): [Item]!
 }`;
 
 const GET_CART_HIDDEN = gql`
@@ -26,6 +28,23 @@ const GET_CART_ITEM_COUNT = gql`
 {
     itemCount @client
 }`;
+
+const GET_CART_ITEM_TOTAL = gql`
+{
+    itemTotal @client
+}`;
+
+const updateItemCount = (cache, cartItems) =>
+    cache.writeQuery({
+        query: GET_CART_ITEM_COUNT,
+        data: { itemCount: getCartItemCount(cartItems) }
+    });
+
+const updateItemTotal = (cache, cartItems) =>
+    cache.writeQuery({
+        query: GET_CART_ITEM_TOTAL,
+        data: { itemTotal: getCartItemTotal(cartItems) }
+    });
 
 export const resolvers = {
     Mutation: {
@@ -47,17 +66,52 @@ export const resolvers = {
 
             const newCartItems = addItemToCart(cartItems, item);
 
-            cache.writeQuery({
-                query: GET_CART_ITEM_COUNT,
-                data: { itemCount: getCartItemCount(newCartItems) }
-            });
+            updateItemCount(cache, newCartItems);
+
+            updateItemTotal(cache, newCartItems);
 
             cache.writeQuery({
                 query: GET_CART_ITEMS,
                 data: { cartItems: newCartItems }
             });
             return newCartItems;
+        },
+
+        removeItemFromCart: (_root, { item }, { cache }) => {
+            const { cartItems } = cache.readQuery({
+                query: GET_CART_ITEMS
+            });
+
+            const newCartItems = removeItemFromCart(cartItems, item);
+
+            updateItemCount(cache, newCartItems);
+
+            updateItemTotal(cache, newCartItems);
+
+            cache.writeQuery({
+                query: GET_CART_ITEMS,
+                data: { cartItems: newCartItems }
+            });
+        },
+
+        clearItemFormCart: (_root, { item }, { cache }) => {
+            const { cartItems } = cache.readQuery({
+                query: GET_CART_ITEMS,
+            });
+
+            const newCartItems = clearItemFromCart(cartItems, item);
+
+            updateItemCount(cache, newCartItems);
+
+            updateItemTotal(cache, newCartItems);
+
+            cache.writeQuery({
+                query: GET_CART_ITEMS,
+                data: { cartItems: newCartItems }
+            });
+
         }
+
     }
 }
 
