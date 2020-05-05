@@ -3,14 +3,16 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-  apiKey: 'AIzaSyCdHT-AYHXjF7wOrfAchX4PIm3cSj5tn14',
-  authDomain: 'crwn-db.firebaseapp.com',
-  databaseURL: 'https://crwn-db.firebaseio.com',
-  projectId: 'crwn-db',
-  storageBucket: 'crwn-db.appspot.com',
-  messagingSenderId: '850995411664',
-  appId: '1:850995411664:web:7ddc01d597846f65'
+  apiKey: "AIzaSyAd2u6Ruypcawjcx3zA_fUQlyVX6ciL-4M",
+  authDomain: "storeella-react.firebaseapp.com",
+  databaseURL: "https://storeella-react.firebaseio.com",
+  projectId: "storeella-react",
+  storageBucket: "storeella-react.appspot.com",
+  messagingSenderId: "367159462489",
+  appId: "1:367159462489:web:65ad65e44544f558acbf48",
+  measurementId: "G-Q9EXBQJ6P6"
 };
+
 
 firebase.initializeApp(config);
 

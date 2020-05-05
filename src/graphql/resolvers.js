@@ -11,7 +11,9 @@ extend type Mutation {
     ToggleCartHidden: Boolean!
     AddItemToCart(item: Item!): [Item]!,
     RemoveItemFromCart(item: Item!): [Item]!,
-    ClearItemFormCart(item: Item!): [Item]!
+    ClearItemFormCart(item: Item!): [Item]!,
+    SetCurrentUser(user: User!): User!
+    ClearCart: String
 }`;
 
 const GET_CART_HIDDEN = gql`
@@ -32,6 +34,11 @@ const GET_CART_ITEM_COUNT = gql`
 const GET_CART_ITEM_TOTAL = gql`
 {
     itemTotal @client
+}`;
+
+const GET_CURRENT_USER = gql`
+{
+    currentUser @client
 }`;
 
 const updateItemCount = (cache, cartItems) =>
@@ -110,6 +117,33 @@ export const resolvers = {
                 data: { cartItems: newCartItems }
             });
 
+        },
+        setCurrentUser: (_root, { user }, { cache }) => {
+            const { currentUser } = cache.readQuery({
+                query: GET_CURRENT_USER
+            });
+
+            cache.writeQuery({
+                query: GET_CURRENT_USER,
+                data: { currentUser: user }
+            });
+
+            return currentUser;
+        },
+
+        clearCart: (_root, _args, { cache }) => {
+
+            cache.writeQuery({
+                query: GET_CART_ITEMS,
+                data: { cartItems: [] }
+            });
+
+            const { cartItems } = cache.readQuery({
+                query: GET_CART_ITEMS
+            });
+            console.log(cartItems);
+            updateItemCount(cache, cartItems);
+            updateItemTotal(cache, cartItems);
         }
 
     }

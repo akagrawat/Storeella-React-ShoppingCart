@@ -21,6 +21,7 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    console.log(this.props);
     const { setCurrentUser } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -44,6 +45,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.props;
     return (
       <div>
         <Header />
@@ -55,7 +57,7 @@ class App extends React.Component {
             exact
             path='/signin'
             render={() =>
-              this.props.currentUser ? (
+              currentUser ? (
                 <Redirect to='/' />
               ) : (
                   <SignInAndSignUpPage />
@@ -68,15 +70,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
-});
+// const mapStateToProps = createStructuredSelector({
+//   currentUser: selectCurrentUser
+// });
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-});
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;
