@@ -7,6 +7,18 @@ extend type Item {
     quantity: Int
 }
 
+extend type DateTime {
+    nanoseconds: Int!
+    seconds: Int!
+  }
+
+extend type User {
+    id: ID!
+    displayName: String!
+    email: String!
+    createdAt: DateTime!
+  }
+
 extend type Mutation {
     ToggleCartHidden: Boolean!
     AddItemToCart(item: Item!): [Item]!,
@@ -141,7 +153,7 @@ export const resolvers = {
             const { cartItems } = cache.readQuery({
                 query: GET_CART_ITEMS
             });
-            console.log(cartItems);
+
             updateItemCount(cache, cartItems);
             updateItemTotal(cache, cartItems);
         }
