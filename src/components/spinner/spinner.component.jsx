@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './spinner.styles.scss';
+import { SpinnerOverlayContainer, SpinnerContainer } from './spinner.styles';
 
 const Spinner = () => (
-  <div className='spinner-overlay'>
-    <div className='spinner-container' />
-  </div>
+  <SpinnerOverlayContainer>
+    <SpinnerContainer />
+  </SpinnerOverlayContainer>
 );
 
 export default Spinner;
