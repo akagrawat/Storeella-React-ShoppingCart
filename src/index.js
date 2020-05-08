@@ -15,6 +15,8 @@ import { resolvers, typeDefs } from './graphql/resolvers';
 import './index.css';
 import { default as App } from './app.container';
 
+import Theme from './theme';
+
 const httpLink = createHttpLink({
   uri: 'https://crwn-clothing.com'
 });
@@ -39,14 +41,16 @@ client.writeData({
 });
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </BrowserRouter>
-    </Provider>
-  </ApolloProvider>,
+  <Theme>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <PersistGate persistor={persistor}>
+            <App />
+          </PersistGate>
+        </BrowserRouter>
+      </Provider>
+    </ApolloProvider>
+  </Theme>,
   document.getElementById('root')
 );
