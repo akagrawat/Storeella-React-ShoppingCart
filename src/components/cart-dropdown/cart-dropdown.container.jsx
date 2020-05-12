@@ -31,6 +31,6 @@ const CartDropdownContainer = () => (
             )
         }
     </Mutation>
-)
+);
 
 export default CartDropdownContainer;

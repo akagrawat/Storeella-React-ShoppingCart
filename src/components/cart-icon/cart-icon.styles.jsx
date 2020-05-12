@@ -11,7 +11,7 @@ align-items: center;
 justify-content: center;
 cursor: pointer;
 `;
-
+ 
 export const ShoppingIconCotainer = styled(ShoppingIcon)`
 width: 24px;
 height: 24px;`;

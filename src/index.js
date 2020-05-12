@@ -17,6 +17,8 @@ import { default as App } from './app.container';
 
 import Theme from './theme';
 
+require('dotenv').config()
+
 const httpLink = createHttpLink({
   uri: 'https://crwn-clothing.com'
 });
