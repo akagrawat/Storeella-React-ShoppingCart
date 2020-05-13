@@ -11,6 +11,11 @@ margin: 50px auto 0;
 button {
     margin-left: auto;
     margin-top: 50px;
+  }
+  
+  @media screen and (max-width: 800px) {
+    width:100%;
+    padding: 10px;
   }`;
 
 export const CheckoutHeaderContainer = styled.div`
@@ -26,6 +31,12 @@ width: 23%;
 
 &:last-child {
   width: 8%;
+}
+
+@media screen and (max-width: 800px) {
+  &:last-child {
+    width: unset;
+  }
 }`;
 
 export const TotalText = styled.div`
