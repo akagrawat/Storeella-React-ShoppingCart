@@ -10,6 +10,8 @@ import { ApolloClient } from 'apollo-boost';
 
 import { store, persistor } from './redux/store';
 
+import * as serviceWorker from './serviceWorker';
+
 import { resolvers, typeDefs } from './graphql/resolvers';
 
 import './index.css';
@@ -56,3 +58,5 @@ ReactDOM.render(
   </Theme>,
   document.getElementById('root')
 );
+
+serviceWorker.register();
